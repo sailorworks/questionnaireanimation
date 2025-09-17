@@ -60,3 +60,40 @@ export const screeningQuestions: ScreeningQuestion[] = [
     options: ["Yes", "No"],
   },
 ];
+
+export interface PainAssessmentQuestion {
+  id: number;
+  text: string;
+  subtitle: string;
+  options: string[];
+}
+
+export const painAssessmentQuestions: PainAssessmentQuestion[] = [
+  {
+    id: 1,
+    text: "Where do you have pain?",
+    subtitle: "Select the area where you're experiencing discomfort.",
+    options: [
+      "Shoulder",
+      "Ankle",
+      "Elbow",
+      "Foot",
+      "Hips",
+      "Knee",
+      "Lower Back",
+      "Neck",
+      "Wrist",
+    ],
+  },
+  {
+    id: 2,
+    text: "How would you describe the pain?",
+    subtitle: "Choose the option that best fits your sensation.",
+    options: [
+      "Sharp and stabbing",
+      "Dull and aching",
+      "Burning or tingling",
+      "Throbbing",
+    ],
+  },
+];
