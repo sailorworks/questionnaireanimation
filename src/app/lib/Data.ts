@@ -1,42 +1,3 @@
-export interface Question {
-  id: number;
-  text: string;
-  options: string[];
-}
-
-export const questions: Question[] = [
-  {
-    id: 1,
-    text: "What's your favorite way to spend a weekend?",
-    options: [
-      "Reading a good book in a cozy corner",
-      "Exploring new places and adventures",
-      "Catching up with friends and family",
-      "Working on personal projects",
-    ],
-  },
-  {
-    id: 2,
-    text: "How do you prefer to learn new things?",
-    options: [
-      "Through hands-on experience",
-      "By reading and researching",
-      "In group settings with others",
-      "With video tutorials and visual aids",
-    ],
-  },
-  {
-    id: 3,
-    text: "What motivates you the most?",
-    options: [
-      "Personal growth and self-improvement",
-      "Making a positive impact on others",
-      "Achieving recognition and success",
-      "Finding balance and happiness",
-    ],
-  },
-];
-
 export interface ScreeningQuestion {
   id: number;
   text: string;
@@ -95,5 +56,65 @@ export const painAssessmentQuestions: PainAssessmentQuestion[] = [
       "Burning or tingling",
       "Throbbing",
     ],
+  },
+];
+
+export interface Question {
+  id: number;
+  text: string;
+  options: string[];
+}
+
+export const questions: Question[] = [
+  {
+    id: 1,
+    text: "On which shoulder do you have the pain?",
+    options: ["Right", "Left"],
+  },
+  {
+    id: 2,
+    text: "Where is the pain?",
+    options: [
+      "Front of shoulder",
+      "Top/outside",
+      "Deep inside joint",
+      "Neck/back of shoulder",
+      "Goes down the arm",
+    ],
+  },
+  {
+    id: 3,
+    text: "Since when?",
+    options: ["<1 week", "1-4 weeks", "1-6 months", ">6 months"],
+  },
+  {
+    id: 4,
+    text: "Movement vs Rest?",
+    options: ["Only on movement", "Even at rest/night", "Both"],
+  },
+  {
+    id: 5,
+    text: "Which movements) are almost impossible?",
+    options: [
+      "Lifting overhead",
+      "Reaching behind back",
+      "Turning neck",
+      "None (can move but hurts)",
+    ],
+  },
+  {
+    id: 6,
+    text: "When is pain worst?",
+    options: [
+      "At night",
+      "With overhead reaching",
+      "After desk/phone use",
+      "Random",
+    ],
+  },
+  {
+    id: 7,
+    text: "Age Band",
+    options: ["<35", "35-50", ">50"],
   },
 ];

@@ -8,14 +8,30 @@ const cardVariants: Variants = {
   active: {
     opacity: 1,
     scale: 1,
-    filter: "blur(0px)" as unknown as string, // 👈 safe cast, no "any"
+    filter: "blur(0px)" as unknown as string,
     transition: { duration: 0.5, ease: "easeOut" },
   },
   inactive: {
     opacity: 0.3,
     scale: 0.95,
-    filter: "blur(2px)" as unknown as string, // 👈 safe cast
+    filter: "blur(2px)" as unknown as string,
     transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
+// --- NEW VARIANTS FOR THE CHECKMARK ANIMATION (1/2) ---
+const checkmarkVariants: Variants = {
+  initial: {
+    pathLength: 0,
+    opacity: 0,
+  },
+  animate: {
+    pathLength: 1,
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+    },
   },
 };
 
@@ -72,12 +88,25 @@ export function ScreeningCard({
               }
             `}
             >
+              {/* --- CODE CHANGED HERE (2/2) --- */}
               {answer === option && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="w-2.5 h-2.5 bg-white rounded-full"
-                />
+                <motion.svg
+                  className="w-4 h-4 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <motion.path
+                    variants={checkmarkVariants}
+                    initial="initial"
+                    animate="animate"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M5 13l4 4L19 7" // ✅ Your checkmark path
+                  />
+                </motion.svg>
               )}
             </div>
             {option}
