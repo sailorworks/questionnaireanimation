@@ -46,17 +46,6 @@ export const painAssessmentQuestions: PainAssessmentQuestion[] = [
       "Wrist",
     ],
   },
-  {
-    id: 2,
-    text: "How would you describe the pain?",
-    subtitle: "Choose the option that best fits your sensation.",
-    options: [
-      "Sharp and stabbing",
-      "Dull and aching",
-      "Burning or tingling",
-      "Throbbing",
-    ],
-  },
 ];
 
 export interface Question {

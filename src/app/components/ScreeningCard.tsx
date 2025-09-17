@@ -118,7 +118,7 @@ export function ScreeningCard({
       <motion.p
         variants={questionVariants}
         animate={animationState} // This component now also follows the active/inactive state
-        className="text-xl font-medium text-gray-800 mb-6 min-h-[84px]"
+        className="text-2xl font-bold text-gray-800 mb-10 leading-relaxed text-left"
       >
         {question.text}
       </motion.p>

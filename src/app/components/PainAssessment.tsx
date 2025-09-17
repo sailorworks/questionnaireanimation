@@ -92,7 +92,7 @@ export default function PainAssessment({ onComplete }: PainAssessmentProps) {
   return (
     <div className="max-w-4xl w-full">
       {/* Progress Bar (no changes here) */}
-      <div className="mb-12">
+      {/* <div className="mb-12">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm font-medium text-gray-800">
             Question {currentQuestion + 1} of {painAssessmentQuestions.length}
@@ -116,7 +116,7 @@ export default function PainAssessment({ onComplete }: PainAssessmentProps) {
             transition={{ duration: 0.5, ease: "easeOut" }}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Question and Options */}
       <AnimatePresence mode="wait">
