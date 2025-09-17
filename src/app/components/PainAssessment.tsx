@@ -6,25 +6,65 @@ import { useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { painAssessmentQuestions } from "../lib/Data";
 
-// Define the props that this component will accept
 interface PainAssessmentProps {
   onComplete: () => void;
 }
 
-// Animation variants (no changes here)
+// --- VARIANTS SECTION: Updated variants are here ---
+
 const rollUpVariants: Variants = {
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   exit: { opacity: 0, y: -50, transition: { duration: 0.3, ease: "easeIn" } },
 };
+
+// 1. Variant for the question text reveal
 const questionVariants: Variants = {
-  /* ... no changes ... */
-};
-const optionVariants: Variants = {
-  /* ... no changes ... */
+  initial: { opacity: 1, y: 20 },
+  animate: {
+    y: 0,
+    transition: {
+      delay: 0.2, // A slight delay after the card rolls up
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
 };
 
-// Update the function to accept the 'onComplete' prop
+// 2. Variant for the options container to stagger its children
+const optionsContainerVariants: Variants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: {
+      delay: 0.4, // Delay after the question appears
+      staggerChildren: 0.1, // Animate each child with a 0.1s delay
+    },
+  },
+};
+
+// 3. Variant for individual options for reveal and hover
+const optionVariants: Variants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  },
+  hover: {
+    scale: 1.03, // The scale effect on hover
+    transition: { duration: 0.2, ease: "easeInOut" },
+  },
+  tap: {
+    scale: 0.97, // A nice little effect when clicking
+  },
+};
+
+// --- END OF VARIANTS SECTION ---
+
 export default function PainAssessment({ onComplete }: PainAssessmentProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -42,21 +82,16 @@ export default function PainAssessment({ onComplete }: PainAssessmentProps) {
         setCurrentQuestion((prev) => prev + 1);
         setSelectedOption(null);
       } else {
-        // --- THIS IS THE KEY CHANGE ---
-        // Instead of showing a thank you screen, call the onComplete function
         onComplete();
       }
     }, 600);
   };
 
-  // The "Thank You" screen is removed from this component,
-  // as the parent page now handles what happens on completion.
-
   const questionData = painAssessmentQuestions[currentQuestion];
 
   return (
     <div className="max-w-4xl w-full">
-      {/* Progress Bar */}
+      {/* Progress Bar (no changes here) */}
       <div className="mb-12">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm font-medium text-gray-800">
@@ -93,23 +128,36 @@ export default function PainAssessment({ onComplete }: PainAssessmentProps) {
           exit="exit"
           className="bg-white rounded-2xl shadow-2xl p-10"
         >
-          <motion.div variants={questionVariants}>
-            <h1 className="text-3xl font-bold text-gray-800 leading-tight">
-              {questionData.text}
-            </h1>
-            <p className="text-gray-500 mt-2 mb-10 text-lg">
-              {questionData.subtitle}
-            </p>
-          </motion.div>
+          {/* --- JSX MODIFICATION 1: Animating the question text --- */}
+          <motion.h1
+            variants={questionVariants}
+            initial="initial"
+            animate="animate"
+            className="text-3xl font-bold text-gray-800 leading-tight"
+          >
+            {questionData.text}
+          </motion.h1>
+          <motion.p
+            variants={questionVariants} // Reuse the same variant for a consistent effect
+            initial="initial"
+            animate="animate"
+            className="text-gray-500 mt-2 mb-10 text-lg"
+          >
+            {questionData.subtitle}
+          </motion.p>
+          {/* --- END OF MODIFICATION --- */}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* --- JSX MODIFICATION 2: Animating the options container --- */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-4"
+            variants={optionsContainerVariants}
+            initial="initial"
+            animate="animate"
+          >
             {questionData.options.map((option, index) => (
               <motion.button
-                key={index}
-                custom={index}
+                key={option} // Using the option text as a key
                 variants={optionVariants}
-                initial="initial"
-                animate="animate"
                 whileHover="hover"
                 whileTap="tap"
                 onClick={() => handleOptionSelect(index)}
@@ -153,7 +201,8 @@ export default function PainAssessment({ onComplete }: PainAssessmentProps) {
                 <span className="text-lg font-medium">{option}</span>
               </motion.button>
             ))}
-          </div>
+          </motion.div>
+          {/* --- END OF MODIFICATION --- */}
         </motion.div>
       </AnimatePresence>
     </div>
