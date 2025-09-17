@@ -33,12 +33,10 @@ export default function Screening({ onComplete }: ScreeningProps) {
     }, 400);
   };
 
-  // This calculation remains the same. The padding handles the centering.
   const trackOffset = -currentStep * (CARD_WIDTH + CARD_GAP);
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/* --- The title and subtitle section remains unchanged --- */}
       <div className="text-center mb-10">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -60,14 +58,12 @@ export default function Screening({ onComplete }: ScreeningProps) {
       </div>
 
       {/* --- The layout for the carousel is updated here --- */}
-      <div className="w-full overflow-hidden">
+      {/* 👇 FIX: Increased padding from pb-10 to pb-16 for more shadow space */}
+      <div className="w-full overflow-hidden pb-16">
         <motion.div
           className="flex"
-          // This animate property correctly slides the track by one card width at a time
           animate={{ x: trackOffset }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          // 👇 NEW: Add padding here using an inline style to center the cards.
-          // The calculation is: (50% of viewport) - (50% of one card's width)
           style={{
             paddingLeft: `calc(50% - ${CARD_WIDTH / 2}px)`,
             paddingRight: `calc(50% - ${CARD_WIDTH / 2}px)`,
