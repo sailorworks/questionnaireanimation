@@ -13,7 +13,6 @@ const rollUpVariants: Variants = {
   exit: { opacity: 0, y: -50, transition: { duration: 0.3, ease: "easeIn" } },
 };
 
-// This variant is already correct (slide-up only)
 const questionVariants: Variants = {
   initial: { opacity: 1, y: 20 },
   animate: {
@@ -37,21 +36,19 @@ const optionsContainerVariants: Variants = {
   },
 };
 
-// --- MODIFIED THIS VARIANT TO REMOVE BLUR ---
 const optionVariants: Variants = {
-  initial: { opacity: 0, scale: 0.8 }, // MODIFIED: Removed filter: "blur(5px)"
+  initial: { opacity: 0, scale: 0.8 },
   animate: {
     opacity: 1,
-    scale: 1, // MODIFIED: Removed filter: "blur(0px)"
+    scale: 1,
     transition: {
-      duration: 0.4, // MODIFIED: Adjusted duration for consistency
+      duration: 0.4,
       ease: [0.25, 0.46, 0.45, 0.94] as const,
     },
   },
   hover: { scale: 1.02, transition: { duration: 0.2, ease: "easeInOut" } },
   tap: { scale: 0.98 },
 };
-// --- END OF MODIFICATION ---
 
 const checkmarkVariants: Variants = {
   initial: {
@@ -86,7 +83,7 @@ export default function Quiz() {
         setCurrentQuestion((prev) => prev + 1);
         setSelectedOption(null);
       } else {
-        // You might want to navigate to a results page here
+        setCurrentQuestion((prev) => prev + 1); // Go to the final state
         console.log("Quiz Complete", answers);
       }
     }, 600);
@@ -94,10 +91,39 @@ export default function Quiz() {
 
   const isQuizFinished = currentQuestion >= questions.length;
   const questionData = isQuizFinished ? null : questions[currentQuestion];
+  const totalQuestions = questions.length;
 
   return (
     <div className="max-w-4xl w-full">
-      {/* You would add a progress bar here if you have one */}
+      {/* --- PROGRESS BAR INTEGRATED HERE --- */}
+      {/* We only show the progress bar if the quiz is not finished */}
+      {!isQuizFinished && (
+        <div className="mb-12">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-gray-800">
+              Question {currentQuestion + 1} of {totalQuestions}
+            </span>
+            <span className="text-sm font-medium text-gray-800">
+              {Math.round(((currentQuestion + 1) / totalQuestions) * 100)}%
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+            <motion.div
+              className="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full"
+              // The key ensures the animation re-runs when the question changes
+              key={currentQuestion}
+              initial={{
+                width: `${(currentQuestion / totalQuestions) * 100}%`,
+              }}
+              animate={{
+                width: `${((currentQuestion + 1) / totalQuestions) * 100}%`,
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          </div>
+        </div>
+      )}
+      {/* --- END OF PROGRESS BAR --- */}
 
       <AnimatePresence mode="wait">
         {!isQuizFinished && questionData ? (
@@ -177,7 +203,21 @@ export default function Quiz() {
             </motion.div>
           </motion.div>
         ) : (
-          <div>{/* Thank you screen or completion message */}</div>
+          // --- Quiz Completion Screen ---
+          <motion.div
+            key="completion-screen"
+            variants={rollUpVariants}
+            initial="initial"
+            animate="animate"
+            className="text-center bg-white rounded-2xl shadow-2xl p-10"
+          >
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Thank You!
+            </h2>
+            <p className="text-lg text-gray-600">
+              You have completed the assessment.
+            </p>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

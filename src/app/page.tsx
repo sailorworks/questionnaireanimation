@@ -22,16 +22,15 @@ export default function Page() {
 
   return (
     <CursorProvider>
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-8 cursor-none overflow-hidden">
+      {/* This main element no longer has its own background, so the global one is visible */}
+      <main className="min-h-screen flex items-center justify-center p-8 cursor-none overflow-hidden">
         <AnimatePresence mode="wait">
           {currentView === "screening" && (
             <motion.div key="screening" /* ... animation props ... */>
-              {/* 3. Screening now transitions to 'painAssessment' */}
               <Screening onComplete={() => setCurrentView("painAssessment")} />
             </motion.div>
           )}
 
-          {/* 4. Add the new view for PainAssessment */}
           {currentView === "painAssessment" && (
             <motion.div
               key="painAssessment"
@@ -41,7 +40,6 @@ export default function Page() {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              {/* It transitions to 'quiz' on complete */}
               <PainAssessment onComplete={() => setCurrentView("quiz")} />
             </motion.div>
           )}

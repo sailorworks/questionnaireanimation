@@ -1,3 +1,5 @@
+// src/app/layout.tsx
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,7 +29,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {/* The dedicated, fixed background element */}
+        <div className="bg-gradient-container" />
+
+        {/* 
+          A content wrapper that sits on top of the background.
+          'relative' and 'isolate' create a new stacking context, 
+          ensuring content doesn't accidentally appear behind the background.
+        */}
+        <div className="relative isolate min-h-screen">{children}</div>
       </body>
     </html>
   );
